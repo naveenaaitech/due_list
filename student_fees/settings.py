@@ -60,7 +60,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'aitechacadem',
+        'PASSWORD': 'appinoovation',
         'HOST': 'db.zhabcfaoijbtqexhtcqr.supabase.co',
         'PORT': '5432',
         'OPTIONS': {
