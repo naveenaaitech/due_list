@@ -63,6 +63,9 @@ DATABASES = {
         'PASSWORD': 'aitechacadem',
         'HOST': 'db.zhabcfaoijbtqexhtcqr.supabase.co',
         'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }# ------------------------------------------------- #
  
