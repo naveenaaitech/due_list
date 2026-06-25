@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
  
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret")
  
-DEBUG = False   # 👈 production = False
+DEBUG = True   # 👈 production = False
  
 # Allow your Leapcell domain (or * for now)
 ALLOWED_HOSTS = ["*"]
