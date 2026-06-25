@@ -1,0 +1,14 @@
+
+Django==5.0.6
+python-dotenv
+requests
+ 
+# Needed for production server
+gunicorn
+ 
+# Needed for serving static files (CSS/JS/Bootstrap) in production
+whitenoise
+ 
+# Database URL parsing and MySQL driver
+dj-database-url
+mysqlclient
