@@ -57,16 +57,12 @@ WSGI_APPLICATION = 'student_fees.wsgi.application'
 # DATABASES config
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'academy_db',      # Make sure you created this database in Workbench first!
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'",
-            'charset': 'utf8mb4',
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'aitechacadem',
+        'HOST': 'db.zhabcfaoijbtqexhtcqr.supabase.co',
+        'PORT': '5432',
     }
 }# ------------------------------------------------- #
  
