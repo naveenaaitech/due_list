@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseBadRequest
+from django.db.models import Prefetch
 from .models import Student, StudentDue, ActionLog
 from .forms import StudentForm
 from datetime import date
@@ -97,7 +98,9 @@ def ordinal(n):
     return f"{n}{suffix}"
 
 def student_list(request):
-    qs = Student.objects.all().order_by('-id')
+    qs = Student.objects.all().order_by('-id').prefetch_related(
+        Prefetch('dues', queryset=StudentDue.objects.all().order_by('due_date'))
+    )
     # filters
     join_from = request.GET.get('join_from','').strip()
     join_to = request.GET.get('join_to','').strip()
@@ -111,8 +114,8 @@ def student_list(request):
     data = []
     today = date.today()
     for s in qs:
-        dues = list(s.dues.all().order_by('due_date'))
-        dues_sorted = sorted(dues, key=lambda d: d.due_date)
+        dues = list(s.dues.all())
+        dues_sorted = dues
 
         completed = sum(1 for d in dues if d.paid)
         total_paid = sum(float(d.amount) for d in dues if d.paid)
@@ -171,6 +174,7 @@ def student_add(request):
         if form.is_valid():
             s = form.save()
             total = s.total_due_months
+            dues = []
             for i in range(total):
                 amt = float(request.POST.get(f'due_amount_{i}','0') or 0)
                 date_str = request.POST.get(f'due_date_{i}','').strip()
@@ -179,7 +183,9 @@ def student_add(request):
                     due_dt = date(y,m,d)
                 else:
                     due_dt = add_months(s.joining_date,i)
-                StudentDue.objects.create(student=s,due_date=due_dt,amount=amt)
+                dues.append(StudentDue(student=s, due_date=due_dt, amount=amt))
+            if dues:
+                StudentDue.objects.bulk_create(dues)
             ActionLog.objects.create(action='add_student',payload=str(s.id))
             return redirect('fees:student_list')
         return HttpResponseBadRequest('Invalid')
