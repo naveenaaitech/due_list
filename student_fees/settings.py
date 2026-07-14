@@ -88,10 +88,13 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 import dj_database_url
 import os
 
+db_url = os.environ.get("DATABASE_URL")
+is_mysql = db_url and db_url.startswith("mysql")
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
+        default=db_url,
         conn_max_age=600,
-        ssl_require=True,
+        ssl_require=not is_mysql,
     )
 }
