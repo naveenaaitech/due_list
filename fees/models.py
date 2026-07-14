@@ -34,7 +34,7 @@ class StudentDue(models.Model):
         max_length=50,
         choices=[
             ("Sangamesh", "Sangamesh"),
-            ("Sridhar", "Sridhar"),
+            ("Ashwath", "Ashwath"),
             ("Binduja", "Binduja"),
         ],
         blank=True,
