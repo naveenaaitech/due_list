@@ -101,7 +101,7 @@ body{
       </thead>
       <tbody>
         {% for it in items %}
-          <tr>
+          <tr id="student-{{ it.student.id }}">
             <td>{{ forloop.counter }}</td>
             <td>{{ it.student.name }}</td>
             <td>{{ it.student.mobile }}</td>
@@ -253,5 +253,21 @@ body{
 {% endfor %}
 
 <p class="mt-3 fw-bold">Total Students: {{ total_students }}</p>
-
+<script>
+  // Smoothly scroll to the student and briefly highlight the row
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash) {
+      const el = document.querySelector(window.location.hash);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.style.transition = 'background-color 0.5s ease';
+        const originalBg = el.style.backgroundColor;
+        el.style.backgroundColor = '#fff3cd'; // soft highlight yellow
+        setTimeout(() => {
+          el.style.backgroundColor = originalBg;
+        }, 2000);
+      }
+    }
+  });
+</script>
 {% endblock %}
