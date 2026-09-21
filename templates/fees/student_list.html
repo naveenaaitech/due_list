@@ -254,20 +254,29 @@ body{
 
 <p class="mt-3 fw-bold">Total Students: {{ total_students }}</p>
 <script>
-  // Smoothly scroll to the student and briefly highlight the row
-  window.addEventListener('DOMContentLoaded', () => {
-    if (window.location.hash) {
+  // Statically maintain exact scroll position without animated/heavy scrolling
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
+  function restorePosition() {
+    const saved = sessionStorage.getItem('student_scroll_pos');
+    if (saved !== null) {
+      window.scrollTo(0, parseInt(saved));
+      sessionStorage.removeItem('student_scroll_pos');
+    } else if (window.location.hash) {
       const el = document.querySelector(window.location.hash);
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        el.style.transition = 'background-color 0.5s ease';
-        const originalBg = el.style.backgroundColor;
-        el.style.backgroundColor = '#fff3cd'; // soft highlight yellow
-        setTimeout(() => {
-          el.style.backgroundColor = originalBg;
-        }, 2000);
+        el.scrollIntoView({ behavior: 'instant', block: 'center' });
       }
     }
+  }
+
+  window.addEventListener('DOMContentLoaded', restorePosition);
+
+  // Save exact position before page unloads (clicking Edit, Save, or Mark as Paid)
+  window.addEventListener('beforeunload', () => {
+    sessionStorage.setItem('student_scroll_pos', window.scrollY);
   });
 </script>
 {% endblock %}
