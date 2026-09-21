@@ -187,7 +187,7 @@ def student_add(request):
             if dues:
                 StudentDue.objects.bulk_create(dues)
             ActionLog.objects.create(action='add_student',payload=str(s.id))
-            return redirect('fees:student_list')
+            return redirect(f"/#student-{s.id}")
         return HttpResponseBadRequest('Invalid')
     else:
         form = StudentForm(initial={'registration_date':date.today(),'joining_date':date.today()})
@@ -224,7 +224,7 @@ def toggle_due(request, due_id):
             d.payment_method = request.POST.get("payment_method")
 
         d.save()
-    return redirect("fees:student_list")
+    return redirect(f"/#student-{d.student.id}")
 
 
 from datetime import datetime
@@ -253,7 +253,7 @@ def student_edit(request, pk):
 
         s.save()
         update_dues_safely(s, request.POST)
-        return redirect('fees:student_list')
+        return redirect(f"/#student-{s.id}")
 
     else:
         dues = list(s.dues.all().order_by('due_date'))
